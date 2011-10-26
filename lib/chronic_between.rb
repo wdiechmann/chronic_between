@@ -22,7 +22,7 @@ class ChronicBetween
     
     ranges(@params, date)
     
-    negatives = '(not|except)\s+'
+    negatives = '(ikke|undtagen)\s+'
     times, closed_times = @times.partition {|x| !x[/^#{negatives}/]}
     closed_times.map!{|x| x[/^#{negatives}(.*)/,2]}
     
@@ -55,7 +55,7 @@ class ChronicBetween
     end
     
     # e.g. Mon-Fri 9:00 to 16:30
-    get %r{(\w+)-(\w+)\s+(\d[\w:]*)\s+to\s+(\d[\w:]*)$} do       
+    get %r{(\w+)-(\w+)\s+(\d[\w:]*)\s+til\s+(\d[\w:]*)$} do       
       d1, d2, t1, t2 = params[:captures]
       date_range_time_range(date, d1 ,d2, t1, t2)
     end
@@ -67,7 +67,7 @@ class ChronicBetween
     end
     
     # e.g. 9:00 to 16:30 Mon-Fri 
-    get %r{(\d[\w:]*)\s+to\s+(\d[\w:]*)\s+(\w+)-(\w+)$} do       
+    get %r{(\d[\w:]*)\s+til\s+(\d[\w:]*)\s+(\w+)-(\w+)$} do       
       t1, t2, d1, d2  = params[:captures]
       date_range_time_range(date, d1 ,d2, t1, t2)
     end        
@@ -81,13 +81,13 @@ class ChronicBetween
     end
 
     # e.g. 3:45-5:15
-    get %r{^(\d[\w:]*)-(\d[\w:]*)(?=\s+(daily|every day))?} do
+    get %r{^(\d[\w:]*)-(\d[\w:]*)(?=\s+(dagligt|hver dag))?} do
       t1, t2 = params[:captures]        
       time_range(date, t1, t2)
     end
     
     # e.g. 3:45 to 5:15
-    get %r{^(\d[\w:]*)\s+to\s+(\d[\w:]*)(?=\s+(daily|every day))?} do
+    get %r{^(\d[\w:]*)\s+til\s+(\d[\w:]*)(?=\s+(dagligt|hver dag))?} do
       t1, t2 = params[:captures]        
       time_range(date, t1, t2)
     end    
@@ -99,7 +99,7 @@ class ChronicBetween
     end
     
     # e.g. Mon 3:45 to 5:15
-    get %r{^(\w+)\s+(\d[\w:]*)\s+to\s+(\d[\w:]*)$} do                                                    
+    get %r{^(\w+)\s+(\d[\w:]*)\s+til\s+(\d[\w:]*)$} do                                                    
       d1, t1, t2 = params[:captures]        
       cdatetime_range(date, d1, t1, t2)
     end    
@@ -111,7 +111,7 @@ class ChronicBetween
     end
     
     # e.g. 3:45 to 5:15 Mon 
-    get %r{^(\d[\w:]*)\s+to\s+(\d[\w:]*)\s+(\w+)$} do                                                    
+    get %r{^(\d[\w:]*)\s+til\s+(\d[\w:]*)\s+(\w+)$} do                                                    
       t1, t2, d1 = params[:captures]        
       cdatetime_range(date, d1, t1, t2)
     end        
@@ -126,7 +126,7 @@ class ChronicBetween
     end
     
     # e.g. after 6pm
-    get %r{^after\s+(\d[\w:]*)$} do                                                    
+    get %r{^efter\s+(\d[\w:]*)$} do                                                    
       t1 = params[:captures].first
       date1 = DateTime.parse(date.strftime("%d-%b-%y ") + t1)
       date2 = DateTime.parse((date + 1).strftime("%d-%b-%y ") + '00:00')      
@@ -134,14 +134,14 @@ class ChronicBetween
     end            
 
     # e.g. before 9pm
-    get %r{^before\s+(\d[\w:]*)$} do                                                    
+    get %r{^før\s+(\d[\w:]*)$} do                                                    
       t1 = params[:captures].first
       date2 = DateTime.parse(date.strftime("%d-%b-%y ") + t1)
       date1 = DateTime.parse(date.strftime("%d-%b-%y") + ' 00:00')
       [date1, date2]
     end
 
-    # e.g. April 2nd - April 5th 12:00-14:00
+    # e.g. 2. april - 5. april 12:00-14:00
     get %r{^(.*)\s+-\s+(.*)\s+(\d[\w:]*)-(\d[\w:]*)$} do                                                    
       d1, d2, t1, t2 = params[:captures]
       cdate1, cdate2 = [d1,d2].map {|d| Chronic.parse(d)}
@@ -152,7 +152,7 @@ class ChronicBetween
       end
     end            
     
-    # e.g. April 5th - April 9th
+    # e.g. 2. april - 5. april
     get %r{^(.*)\s+-\s+(.*)$} do                                                    
       d1, d2 = params[:captures]        
       cdate1, cdate2 = [d1,d2].map {|d| Chronic.parse(d)}
@@ -162,7 +162,7 @@ class ChronicBetween
       [date1, date1 + n_days + 1]
     end
 
-    # e.g. April 5th
+    # e.g. 2. april
     get %r{^(.*)$} do
       day = params[:captures].first
       cdate1 = Chronic.parse(day)

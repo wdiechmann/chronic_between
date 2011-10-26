@@ -4,6 +4,8 @@ A simple Ruby natural language parser for date and time ranges. (For example, Mo
 
 Several date and time ranges can be supplied with matching patterns being separated by a comma.
 
+This version uses danish keywords - and performs best using the 'danish' branch of the Chronic gem
+
 == Installation
 
     $ sudo gem sources -a http://gemcutter.org
@@ -12,7 +14,7 @@ Several date and time ranges can be supplied with matching patterns being separa
 == Usage
 
 
-    >> s = 'Mon-Fri 9:00-16:30, Saturday, Sunday'
+    >> s = 'Man-Fre 9:00-16:30;ikke lørdag;ikke søndag'
     >> c = ChronicBetween.new(s)
 
     >> DateTime.now      
@@ -31,27 +33,27 @@ Several date and time ranges can be supplied with matching patterns being separa
 
 Examples of parse-able strings:
 
-* 'Mon-Fri 9:00-16:30'
-* 'saturday' 
+* 'Man-Fre 9:00-16:30'
+* 'lørdag' 
 * '12:00-13:00'
-* 'Sat,Sun'
-* 'Mon-Fri 9:00-16:30, Saturday, Sunday'
-* 'Mon-Fri 9:00-16:30, Saturday, 10:15-10:45'
-* 'Sat 18:15-21:40'
-* 'Mon-Wed'
-* 'Mon-Fri 9:00 to 16:30'
-* '9:00-16:30 Mon-Fri'
-* '9:00 to 16:30 Mon-Fri'
-* '3:45 to 5:15'
-* 'Mon 3:45 to 5:15'
-* '3:45-5:15 Mon'
-* '3:45 to 5:15 Mon'
-* 'after 6pm'
-* 'before 9pm'
-* 'April 2nd - April 5th 12:00-14:00'
-* 'April 5th - April 9th'
-* 'April 5th'
-* 'not before 6pm'
-* 'except after 6pm'
-* 'Sunday, after 6pm'
-* 'Saturday, not after 6pm'
+* 'Lør,Søn'
+* 'Man-Fre 9:00-16:30, lørdag, søndag'
+* 'Man-Fre 9:00-16:30, lørdag, 10:15-10:45'
+* 'Lør 18:15-21:40'
+* 'Man-Ons'
+* 'Man-Fre 9:00 til 16:30'
+* '9:00-16:30 Man-Fre'
+* '9:00 til 16:30 Man-Fre'
+* '3:45 til 5:15'
+* 'Man 3:45 til 5:15'
+* '3:45-5:15 Man'
+* '3:45 to 5:15 Man'
+* 'efter 18'
+* 'før 21'
+* '2. april - 5. april 12:00-14:00'
+* '5. april - 9. april'
+* '5. april'
+* 'ikke før 18'
+* 'undtagen efter 18'
+* 'søndag, efter 18'
+* 'lørdag, ikke efter 18'
